@@ -79,3 +79,27 @@ button:focus-visible {
   padding: 2rem;
   text-align: center;
 }
+
+blockquote,
+q {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+button:focus {
+  outline: 0;
+}
