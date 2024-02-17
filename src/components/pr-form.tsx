@@ -47,7 +47,7 @@ export function PRForm() {
         mx: "auto",
       }}
     >
-      <Typography level="title-lg">PR Message</Typography>
+      <Typography level="title-lg">PR Sharing</Typography>
       <Divider inset="none" />
       <CardContent
         sx={{

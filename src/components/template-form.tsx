@@ -2,41 +2,18 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
-import Modal from "@mui/joy/Modal";
-import ModalDialog from "@mui/joy/ModalDialog";
-import Button from "@mui/joy/Button";
 import Input from "@mui/joy/Input";
-import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Alert from "@mui/joy/Alert";
-import { useGithubStore } from "../store/Github";
 import { useState } from "react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
+import { useJiraStore } from "../store/Jira";
 
-export function PRForm() {
-  const [openEmojiModal, setOpenEmojiModal] = useState<boolean>(false);
-  const [emoji, setEmoji] = useState<string>("🌱");
-  const { prInfo, errorPR, setPRInfo } = useGithubStore();
-
-  const renderEmojiList = () => {
-    const emojis = ["🐛", "🏗️", "💪", "💥", "🌱", "📦", "🎨", "🖼"].map((e) => (
-      <Button color="neutral" onClick={() => setEmoji(e)} variant="outlined">
-        {e}
-      </Button>
-    ));
-
-    return [
-      ...emojis,
-      <Button
-        color="neutral"
-        onClick={() => setOpenEmojiModal(true)}
-        variant="outlined"
-      >
-        ⁉
-      </Button>,
-    ];
-  };
+export function TemplateForm() {
+  const [title, setTitle] = useState<string>("");
+  const [ticket, setTicket] = useState<string>("");
+  const [documentation, setDocumentation] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const { url } = useJiraStore();
 
   return (
     <Card
@@ -47,7 +24,7 @@ export function PRForm() {
         mx: "auto",
       }}
     >
-      <Typography level="title-lg">PR Message</Typography>
+      <Typography level="title-lg">PR Template</Typography>
       <Divider inset="none" />
       <CardContent
         sx={{
@@ -56,42 +33,30 @@ export function PRForm() {
           gap: 1.5,
         }}
       >
-        <FormControl sx={{ gridColumn: "1/-1" }}>
+        <FormControl sx={{ gridColumn: "1", gridRow: "1" }}>
           <Input
-            placeholder="Github URL"
-            color={errorPR ? "danger" : prInfo?.title ? "success" : "neutral"}
-            onChange={(e) => setPRInfo(e.target.value)}
+            placeholder="Title"
+            onChange={(e) => setTitle(e.target.value)}
           />
         </FormControl>
-
-        <Modal
-          open={openEmojiModal}
-          onClose={() => {
-            setOpenEmojiModal(false);
-          }}
-        >
-          <ModalDialog
-            sx={{ padding: "0", border: "none", borderRadius: "20px" }}
-          >
-            <Picker
-              data={data}
-              onEmojiSelect={(e: { native: string }) => {
-                setEmoji(e.native);
-                setOpenEmojiModal(false);
-              }}
-            />
-          </ModalDialog>
-        </Modal>
-
-        <Stack
-          sx={{ gridColumn: "1/-1" }}
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={1}
-        >
-          {renderEmojiList()}
-        </Stack>
+        <FormControl sx={{ gridColumn: "2", gridRow: "1" }}>
+          <Input
+            placeholder="Ticket"
+            onChange={(e) => setTicket(e.target.value)}
+          />
+        </FormControl>
+        <FormControl sx={{ gridColumn: "1/-1" }}>
+          <Input
+            placeholder="Description"
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </FormControl>
+        <FormControl sx={{ gridColumn: "1/-1" }}>
+          <Input
+            placeholder="Documentation"
+            onChange={(e) => setDocumentation(e.target.value)}
+          />
+        </FormControl>
 
         <Alert
           size="lg"
@@ -101,32 +66,25 @@ export function PRForm() {
         >
           <div
             style={{
-              lineHeight: "1.75em",
+              display: "flex",
+              justifyContent: "flex-start",
+              flexDirection: "column",
+              textAlign: "start",
+              alignContent: "flex-start",
             }}
           >
-            <span>
-              {emoji} PR :{" "}
-              <a
-                href={
-                  prInfo?.url
-                    ? prInfo?.url
-                    : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                }
-              >
-                {prInfo?.ticket ? prInfo?.ticket : "ABC-XXX"}
-              </a>{" "}
-              → {prInfo?.branch ? prInfo?.branch : "branch"}
-            </span>
-            <blockquote
-              style={{
-                borderLeft: "solid #a5a5a5 3px",
-                borderRadius: "2px",
-                display: "flex",
-                paddingLeft: "1rem",
-              }}
-            >
-              {prInfo?.title ? prInfo?.title : "Hotfix : Change app name"}
-            </blockquote>
+            <span>## {title}</span>
+            <span>{description}</span>
+            {url ? (
+              <span>
+                [Jira ticket](
+                {(url.endsWith("/") ? url : url + "/") + "browse/" + ticket})
+              </span>
+            ) : (
+              <i>Missing Jira URL ↘</i>
+            )}
+            <span>### Documentation</span>
+            {documentation}
           </div>
         </Alert>
       </CardContent>

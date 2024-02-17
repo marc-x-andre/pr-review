@@ -4,10 +4,11 @@ import { useGithubStore } from "./store/Github";
 import { useEffect } from "react";
 import { StatusBar } from "./components/StatusBar/StatusBar";
 import { useJiraStore } from "./store/Jira";
+import { TemplateForm } from "./components/template-form";
 
 const StyledMain = styled.main`
   display: grid;
-  row-gap: 4rem;
+  row-gap: 2rem;
   justify-items: center;
 `;
 
@@ -29,7 +30,8 @@ function App() {
 
   return (
     <StyledMain>
-      <h1>Hello 👋</h1>
+      <h1>Pull Request 🚁</h1>
+      <TemplateForm />
       <PRForm />
       <StatusBar />
     </StyledMain>
