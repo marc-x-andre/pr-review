@@ -31,8 +31,8 @@ function App() {
   return (
     <StyledMain>
       <h1>Pull Request 🚁</h1>
-      <TemplateForm />
       <PRForm />
+      <TemplateForm />
       <StatusBar />
     </StyledMain>
   );
