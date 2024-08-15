@@ -98,3 +98,16 @@ q:after {
 button:focus {
   outline: 0;
 }
+
+.hide-large {
+  display: none;
+}
+
+@media (max-width: 1500px) {
+  .display-large {
+    display: none;
+  }
+  .hide-large {
+    display: block;
+  }
+}

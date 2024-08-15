@@ -19,7 +19,7 @@ import { useJiraStore } from "../store/Jira";
 
 const CopyToClipboardButton = () => {
   const handleClick = () => {
-    var range = document.createRange();
+    const range = document.createRange();
     range.selectNode(document.getElementById("textContent")!);
     const selection = window.getSelection();
     if (selection) {
@@ -59,13 +59,15 @@ export function PRForm() {
 
     return [
       ...emojis,
-      <Button
-        color="neutral"
-        onClick={() => setOpenEmojiModal(true)}
-        variant="outlined"
-      >
-        ⁉
-      </Button>,
+      <span className="hide-large">
+        <Button
+          color="neutral"
+          onClick={() => setOpenEmojiModal(true)}
+          variant="outlined"
+        >
+          ⁉
+        </Button>
+      </span>,
     ];
   };
 
@@ -183,6 +185,25 @@ export function PRForm() {
           <CopyToClipboardButton />
         </Alert>
       </CardContent>
+      <div
+        className="display-large"
+        style={{
+          position: "absolute",
+          zIndex: 100,
+          right: "-65%",
+          top: "0",
+          opacity: "0.9",
+        }}
+      >
+        <Picker
+          data={data}
+          theme="light"
+          onEmojiSelect={(e: { native: string }) => {
+            setEmoji(e.native);
+            setOpenEmojiModal(false);
+          }}
+        />
+      </div>
     </Card>
   );
 }
